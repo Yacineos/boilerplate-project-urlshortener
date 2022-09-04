@@ -29,7 +29,7 @@ app.get("/api/shorturl/:short_url", async(req, res) => {
         const { short_url } = req.params;
         //check if url exist in db if not send error
         const valideurl = await url.findOne({ short_url });
-        if (!valideurl) return res.status(400).json({ error: "invalid url" });
+        if (!valideurl) return res.json({ error: "invalid url" });
 
         console.log(valideurl);
         const { original_url } = valideurl;
@@ -38,7 +38,7 @@ app.get("/api/shorturl/:short_url", async(req, res) => {
         res.redirect(original_url);
     } catch (e) {
         console.log(e);
-        res.status(500).json({ error: "error in api controller" });
+        res.json({ error: "error in api controller" });
     }
 });
 
@@ -51,13 +51,13 @@ app.post("/api/shorturl", async(req, res) => {
     console.log(inputUrl);
     try {
         //handle valide url
-        if (!validUrl.isWebUri(inputUrl)) return res.status(400).json({ error: "Invalid URL" });
+        if (!validUrl.isWebUri(inputUrl)) return res.json({ error: "Invalid URL" });
 
 
         //check if url exist in db if not send error
         const existurl = await url.findOne({ original_url: inputUrl });
 
-        if (existurl) return res.status(200).json({ original_url: existurl.original_url, short_url: existurl.short_url });
+        if (existurl) return res.json({ original_url: existurl.original_url, short_url: existurl.short_url });
 
         //if not add it to db and send it to user
         const newUrl = new url({ original_url: inputUrl });
@@ -69,7 +69,7 @@ app.post("/api/shorturl", async(req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.status(500).json({ error: err });
+        res.json({ error: err });
     }
 
 });
