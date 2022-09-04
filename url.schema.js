@@ -1,17 +1,19 @@
 const mongoose = require("mongoose")
-const { Schema } = mongoose
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const urlSchema = new Schema({
+const urlSchema = new mongoose.Schema({
     short_url: {
-      type: Number,
-      required: true,
-      unique:true
-      
+        type: Number,
+        unique: true
+
     },
     original_url: {
-      type: String,
-      required: true,
+        type: String,
+        required: true,
     },
-},{timestamps:true})
+}, { timestamps: true })
 
-module.exports = mongoose.model("url",urlSchema)
+urlSchema.plugin(AutoIncrement, { inc_field: 'short_url' });
+
+
+module.exports = mongoose.model("url", urlSchema)
