@@ -51,7 +51,7 @@ app.post("/api/shorturl", async(req, res) => {
     console.log(inputUrl);
     try {
         //handle valide url
-        if (!validUrl.isUri(inputUrl)) return res.status(400).json({ error: "invalid url" });
+        if (!validUrl.isUri(inputUrl)) return res.status(400).json({ error: "Invalid URL" });
 
 
         //check if url exist in db if not send error
