@@ -11,7 +11,7 @@ const urlSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-}, { timestamps: true })
+})
 
 urlSchema.plugin(AutoIncrement, { inc_field: 'short_url' });
 

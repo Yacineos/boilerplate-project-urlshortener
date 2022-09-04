@@ -56,12 +56,17 @@ app.post("/api/shorturl", async(req, res) => {
 
         //check if url exist in db if not send error
         const existurl = await url.findOne({ original_url: inputUrl });
-        if (existurl) return res.send(existurl);
+
+        if (existurl) return res.status(200).json({ original_url: existurl.original_url, short_url: existurl.short_url });
 
         //if not add it to db and send it to user
         const newUrl = new url({ original_url: inputUrl });
         const savedUrl = await newUrl.save();
-        res.send(savedUrl);
+        const { original_url, short_url } = savedUrl;
+        res.json({
+            original_url,
+            short_url
+        });
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: err });
